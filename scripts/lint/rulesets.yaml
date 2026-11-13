@@ -1,0 +1,190 @@
+rulesets:
+  GL:
+    - forbid-special-blocks
+    - forbid-always-comb
+    - forbid-always-ff
+    - restrict-assign-rhs
+    - restrict-gate-primitives
+    - forbid-module-instantiation
+    - restrict-port-connections
+           
+  GL_Struct:
+    - forbid-special-blocks
+    - forbid-always-comb
+    - forbid-always-ff
+    - restrict-assign-rhs
+    - restrict-gate-primitives
+    - restrict-port-connections
+
+  GL_Struct_No_Gates:
+    - forbid-special-blocks
+    - forbid-always-comb
+    - forbid-always-ff
+    - restrict-assign-rhs
+    - forbid-gate-primitives
+    - restrict-port-connections
+
+  RTL_No_Always:
+    - forbid-special-blocks
+    - forbid-always-comb
+    - forbid-always-ff
+    - forbid-module-instantiation
+    - forbid-gate-primitives
+    - forbid-logic-initialization
+    - forbid-nested-ternary
+    - forbid-one-bit-literal-ternary
+
+  RTL_Sequential:
+    - if-missing-final-else
+    - final-else-x-only
+    - if-x-assignment
+    - forbid-nested-if-statements
+    - forbid-generic-always
+    - always-ff-non-blocking
+    - forbid-async-reset
+    - forbid-always-comb
+    - forbid-negedge
+    - forbid-special-blocks
+    - forbid-gate-primitives
+    - forbid-logic-initialization
+    - forbid-nested-ternary
+    - forbid-one-bit-literal-ternary
+    - forbid-module-instantiation
+
+  RTL_Combinational:
+    - forbid-always-comb
+    - forbid-always-ff
+    - forbid-generic-always
+    - forbid-special-blocks
+    - forbid-gate-primitives
+    - forbid-if-statements
+    - forbid-logic-initialization
+    - forbid-nested-ternary
+    - forbid-one-bit-literal-ternary
+    - forbid-module-instantiation-except-registers
+
+  RTL_Always_Comb_Case:
+    - case-missing-default
+    - default-case-x-only
+    - default-case-signal-coverage
+    - only-case-in-always-comb
+    - forbid-always-ff
+    - forbid-generic-always
+    - always-comb-blocking
+    - forbid-special-blocks
+    - forbid-gate-primitives
+    - forbid-if-statements
+    - forbid-logic-initialization
+    - forbid-ternary
+    - forbid-module-instantiation
+
+  RTL_Control:
+    - case-missing-default
+    - default-case-x-only
+    - default-case-signal-coverage
+    - only-case-in-always-comb
+    - forbid-always-ff
+    - forbid-generic-always
+    - always-comb-blocking
+    - restrict-port-connections
+    - forbid-if-statements
+    - forbid-logic-initialization
+    - forbid-nested-ternary
+    - forbid-one-bit-literal-ternary
+    - forbid-gate-primitives
+    - forbid-module-instantiation-except-registers
+
+  RTL_Struct:
+    - forbid-always-ff
+    - forbid-always-comb
+    - forbid-special-blocks
+    - restrict-port-connections
+    - forbid-logic-initialization
+    - restrict-assign-rhs
+    - forbid-gate-primitives
+
+  RTL_Struct_With_Gates:
+    - forbid-always-ff
+    - forbid-always-comb
+    - forbid-special-blocks
+    - restrict-port-connections
+    - forbid-logic-initialization
+    - restrict-assign-rhs
+    - restrict-gate-primitives
+
+files:
+  # Lab 1
+  lab1/BinaryToBinCodedDec_GL.v:       GL
+  lab1/BinaryToSevenSegOpt_GL.v:       GL
+  lab1/BinaryToSevenSegUnopt_GL.v:     GL
+  lab1/DisplayOpt_GL.v:                GL_Struct_No_Gates
+  lab1/DisplayUnopt_GL.v:              GL_Struct_No_Gates
+
+  # Lab 2
+  lab2/FullAdder_GL.v:                 GL
+  lab2/Mux2_1b_GL.v:                   GL
+  lab2/Multiplier_1x16b_GL.v:          GL
+  lab2/AdderRippleCarry_8b_GL.v:       GL_Struct_No_Gates
+  lab2/AdderRippleCarry_16b_GL.v:      GL_Struct_No_Gates
+  lab2/Mux2_8b_GL.v:                   GL_Struct_No_Gates
+  lab2/Mux2_16b_GL.v:                  GL_Struct_No_Gates
+  lab2/AdderCarrySelect_16b_GL.v:      GL_Struct_No_Gates
+  lab2/Multiplier_2x16b_GL.v:          GL_Struct_No_Gates
+  lab2/Calculator_GL.v:                GL_Struct_No_Gates
+  lab2/Adder_16b_RTL.v:                RTL_No_Always
+  lab2/Multiplier_2x16b_RTL.v:         RTL_No_Always
+
+  # Lab 3
+  lab3/DLatch_GL.v:                    GL
+  lab3/DFF_GL.v:                       GL_Struct
+  lab3/DFFR_GL.v:                      GL_Struct
+  lab3/DFFRE_GL.v:                     GL_Struct
+  lab3/Register_16b_GL.v:              GL_Struct_No_Gates
+  lab3/EqComparator_16b_GL.v:          GL
+  lab3/Counter_16b_GL.v:               GL_Struct
+  lab3/NotePlayerCtrl_GL.v:            GL_Struct
+  lab3/NotePlayer_GL.v:                GL_Struct_No_Gates
+
+  lab3/DFF_RTL.v:                      RTL_Sequential
+  lab3/DFFR_RTL.v:                     RTL_Sequential
+  lab3/DFFRE_RTL.v:                    RTL_Sequential
+  lab3/Register_16b_RTL.v:             RTL_Sequential
+  lab3/EqComparator_16b_RTL.v:         RTL_No_Always
+  lab3/Mux2_16b_RTL.v:                 RTL_No_Always
+  lab3/Mux8_1b_RTL.v:                  RTL_Always_Comb_Case
+
+  lab3/Counter_16b_flat_RTL.v:         RTL_Combinational
+  lab3/Counter_16b_struct_RTL.v:       RTL_Struct_With_Gates
+  lab3/NotePlayerCtrl_RTL.v:           RTL_Control
+  lab3/NotePlayer_RTL.v:               RTL_Struct
+  lab3/MultiNotePlayer_RTL.v:          RTL_Struct_With_Gates
+  lab3/MusicPlayerCtrl_RTL.v:          RTL_Control
+  lab3/MusicPlayerDpath_RTL.v:         RTL_Struct
+  lab3/MusicPlayer_RTL.v:              RTL_Struct
+
+  # Lab 4
+  lab4/Mux2_32b_RTL.v:                 RTL_Always_Comb_Case
+  lab4/Mux4_32b_RTL.v:                 RTL_Always_Comb_Case
+  lab4/Register_32b_RTL.v:             RTL_Sequential
+  lab4/Adder_32b_GL.v:                 GL_Struct_No_Gates
+  lab4/EqComparator_32b_RTL.v:         RTL_No_Always
+  lab4/ALU_32b.v:                      RTL_Struct
+  lab4/Multiplier_32x32b_RTL.v:        RTL_No_Always
+  lab4/ImmGen_RTL.v:                   RTL_Always_Comb_Case
+  lab4/RegfileZ2r1w_32x32b_RTL.v:      RTL_Sequential
+  lab4/EdgeDetector_RTL.v:             RTL_Combinational
+  lab4/ShiftRegister_44b_RTL.v:        RTL_Sequential
+  lab4/Synchronizer_RTL.v:             RTL_Struct
+
+  lab4/ProcScycleDpath.v:              RTL_Struct
+  lab4/ProcScycleCtrl.v:               RTL_Control
+  lab4/ProcScycle.v:                   RTL_Struct
+  lab4/MemoryBusDpath_RTL.v:           RTL_Struct
+  lab4/MemoryBusCtrl_RTL.v:            RTL_No_Always
+  lab4/MemoryBus_RTL.v:                RTL_Struct
+  lab4/SPI_RTL.v:                      RTL_Struct_With_Gates
+
+  # Lab 4C
+  lab4/AccumXcelDpath.v:               RTL_Struct
+  lab4/AccumXcelCtrl.v:                RTL_Control
+  lab4/AccumXcel.v:                    RTL_Struct

@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+#========================================================================
+# tinyrv1-assemble [options] <asm-file>
+#========================================================================
+#
+#  -h --help           Display this message
+#  -v --verbose        Report completion on stderr
+#  -o --output FILE    Write the memory image to FILE
+#
+# Display an assembly listing by default or write a .bin file with -o
+#
+
+# Hack to add project root to python path
+
+import sys
+from pathlib import Path
+
+for project_dir in Path(__file__).resolve().parents:
+  if (project_dir / "configure.ac").is_file():
+    sys.path.insert( 0, str(project_dir) )
+    break
+
+import argparse
+
+from scripts.binutils.assembler import assemble
+from scripts.binutils.listing import format_listing, format_machine_word
+
+#------------------------------------------------------------------------
+# Command line processing
+#------------------------------------------------------------------------
+
+class ArgumentParserWithCustomError(argparse.ArgumentParser):
+
+  def format_help( self ):
+
+    lines = []
+    with open( __file__, encoding="utf-8" ) as script:
+      for lineno, line in enumerate( script ):
+        if not line.startswith("#"):
+          break
+        if lineno == 2 or lineno >= 4:
+          lines.append( line[1:].removeprefix(" ") )
+
+    return "".join(lines)
+
+  def error( self, msg ):
+
+    self.exit( 2, f"ERROR: {msg}\n\n{self.format_help()}" )
+
+def parse_cmdline():
+
+  p = ArgumentParserWithCustomError( add_help=False )
+  p.add_argument( "-h", "--help",    action="help" )
+  p.add_argument( "-v", "--verbose", action="store_true" )
+  p.add_argument( "-o", "--output",  type=Path )
+  p.add_argument( "asm_file",        type=Path )
+
+  return p.parse_args()
+
+#------------------------------------------------------------------------
+# Main
+#------------------------------------------------------------------------
+
+def main():
+
+  opts = parse_cmdline()
+
+  try:
+    text = opts.asm_file.read_text( encoding="utf-8" )
+    image = assemble( text, str(opts.asm_file) )
+
+    if opts.output:
+      lines = [ format_machine_word(word) for word in image ]
+      opts.output.write_text( "\n".join(lines) + "\n", encoding="ascii" )
+    else:
+      print()
+      print( format_listing(image) )
+      print()
+
+  except (OSError, ValueError) as error:
+    print( error, file=sys.stderr )
+    return 1
+
+  if opts.verbose:
+    print( f"Assembled {opts.asm_file} ({len(image)} words)", file=sys.stderr )
+
+  return 0
+
+if __name__ == "__main__":
+  sys.exit( main() )
+
