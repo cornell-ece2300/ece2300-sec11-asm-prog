@@ -28,21 +28,6 @@
   # Implement the loop
   #'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-loop:
-  lw   x3, 0(x1)          # read a[i]
-  lw   x4, 4(x1)          # read a[i+1]
-  bne  x3, x4, found      # if ( a[i] != a[i+1] ) goto found
-  addi x1, x1, 4          # a ptr bump
-  addi x2, x2, -1
-  bne  x2, x0, loop
-  jal  x0, done
-
-found:
-  addi x6, x3, 0          # first = a[i]
-  addi x7, x4, 0          # second = a[i+1]
-
-  #'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
 done:
   jal  x0, done
 
