@@ -4,8 +4,6 @@
 
 `include "ece2300/ece2300-test.v"
 `include "ece2300/ece2300-misc.v"
-
-// ece2300-lint off
 `include "lab4/test/ProcFL.v"
 
 module Top();
@@ -31,7 +29,7 @@ module Top();
   logic [31:0] out0, out1, out2, out3;
 
   logic        trace_val;
-  logic [31:0] trace_addr;
+  logic [31:0] trace_pc;
   logic [31:0] trace_inst;
   logic        trace_wen;
   logic [4:0]  trace_wreg;
@@ -60,32 +58,31 @@ module Top();
 
   task check_trace
   (
-    input logic [31:0] addr,
+    input logic [31:0] pc,
     input logic        wen,
-    input logic [4:0]  wreg,
+    input logic  [4:0] wreg,
     input logic [31:0] wdata
-
   );
     if ( !t.failed ) begin
       t.num_checks += 1;
 
+      proc.step();
+
       #8;
 
-      while ( !trace_val ) begin
-        #10;
-      end
+      `ECE2300_CHECK_EQ_HEX( trace_val, 1'b1 );
 
       if ( t.n != 0 ) begin
         if ( trace_wen )
-          $display( "%3d: %h %-s x%0d %h", t.cycles,
-                    trace_addr, tinyrv1.disasm(trace_addr, trace_inst),
-                    trace_wdata, trace_wreg);
+          $display( "%3d: %h %-s %02d %h", t.cycles,
+                    trace_pc, tinyrv1.disasm( trace_pc, trace_inst ),
+                    trace_wreg, trace_wdata);
         else
           $display( "%3d: %h %-s", t.cycles,
-                    trace_addr, tinyrv1.disasm(trace_addr, trace_inst));
+                    trace_pc, tinyrv1.disasm( trace_pc, trace_inst ));
       end
 
-      `ECE2300_CHECK_EQ_HEX( trace_addr, addr );
+      `ECE2300_CHECK_EQ_HEX( trace_pc, pc );
       `ECE2300_CHECK_EQ_HEX( trace_wen, wen  );
       if ( wen )
         `ECE2300_CHECK_EQ_HEX( trace_wreg, wreg );
@@ -122,6 +119,13 @@ module Top();
   );
     proc.M[addr[8:2]] = data_;
     data_addr_unused = addr;
+  endtask
+
+  //----------------------------------------------------------------------
+  // go
+  //----------------------------------------------------------------------
+
+  task go();
   endtask
 
   //----------------------------------------------------------------------
